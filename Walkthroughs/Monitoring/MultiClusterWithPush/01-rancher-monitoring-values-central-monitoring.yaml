@@ -1,0 +1,25 @@
+prometheus:
+  prometheusSpec:
+    remoteWrite:
+    - url: https://prometheus.central-monitoring.plgrnd.be/api/v1/write
+      basicAuth:
+        username:
+          name: prometheus-basic-auth
+          key: username
+        password:
+          name: prometheus-basic-auth
+          key: password
+    externalLabels:
+      cluster: central-monitoring
+    remoteWriteDashboards: true
+
+grafana:
+  sidecar:
+    dashboards:
+      multicluster:
+        global:
+          enabled: true
+        etcd:
+          enabled: true
+    datasources:
+      url: http://prometheus-operated.central-monitoring-system:9090/
